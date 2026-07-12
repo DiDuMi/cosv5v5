@@ -255,7 +255,29 @@ footer .fl2 a:hover{color:var(--purple)}
   .nav-cta{font-size:11px;padding:5px 12px}
   .about-grid{grid-template-columns:1fr}
   .pg,.grid-3{grid-template-columns:1fr}
+  .hero{padding:76px 20px 24px}
+  .hero h1{font-size:clamp(24px,7vw,36px)}
+  .hero p{font-size:13px}
+  .hero-stats{gap:24px}
+  .section{padding:40px 16px}
+  .sin .st{font-size:clamp(20px,5vw,26px)}
+  .grid-3{gap:10px}
+  .card{padding:20px 18px}
   .grid-4{grid-template-columns:repeat(2,1fr)}
+  .pg{gap:14px}
+  .pc-inner{padding:28px 20px 22px}
+  .pc-details{padding:0 20px!important}
+  .pc.open .pc-details{padding:0 20px 22px!important}
+  .cg{grid-template-columns:repeat(auto-fill,minmax(100px,1fr))}
+  .floating-pwd{font-size:12px;padding:8px 16px;bottom:16px}
+  footer .fl2{gap:10px}
+}
+@media(max-width:480px){
+  .hero h1{font-size:22px}
+  .hero-stats{gap:16px}
+  .hero-stat .n{font-size:18px}
+  .hero-stat .l{font-size:10px}
+  .card p{font-size:12px}
 }
 </style>
 </head>
@@ -475,7 +497,7 @@ footer .fl2 a:hover{color:var(--purple)}
         <div class="pb gold">🔥 热销</div>
         <div class="pc-inner">
           <div class="pn">🌱 初级</div>
-          <div class="psub">每日全网流出 · 允许转发</div>
+          <div class="psub">🐹 仓鼠窝 · 每日全网流出 · 允许转发</div>
           <div class="pp"><span class="a">¥18</span><span class="e">/月</span></div>
           <div class="pt"><span>¥36/年</span><span>¥66/永久</span></div>
           <div class="pc-expand">点击查看详情 <span class="arr">▾</span></div>
@@ -496,7 +518,7 @@ footer .fl2 a:hover{color:var(--purple)}
         <div class="pb purple">⭐ 推荐</div>
         <div class="pc-inner">
           <div class="pn">🎄 高级</div>
-          <div class="psub">含初级全部权益 · 禁止转发</div>
+          <div class="psub">👑 大佬群 · 含初级全部权益 · 禁止转发</div>
           <div class="pp"><span class="a">¥198</span><span class="e">/年</span></div>
           <div class="pt"><span>¥288/永久</span></div>
           <div class="pc-expand">点击查看详情 <span class="arr">▾</span></div>
@@ -586,6 +608,29 @@ footer .fl2 a:hover{color:var(--purple)}
       <div class="fi"><div class="fq">社群有哪些频道？<span class="a">▼</span></div><div class="fa"><p>主频道 @COSV5_COM · 高级 @COSV5_VIP · 中文 @COSV5CN · 多语言频道 (EN/JP/RU/KO/TH/FR/DE/HI)。全部列表见 @COSV5Nav。</p></div></div>
       <div class="fi"><div class="fq">有哪些 Bot 可用？<span class="a">▼</span></div><div class="fa"><p>@PaPulseBot — 搜索 / @GuiYaoBot — 签到积分 / @V5joinBot — 购买 / @V5CSRbot — 客服 / @ChuYunbot — 预览</p></div></div>
       <div class="fi"><div class="fq">社群什么时候成立的？<span class="a">▼</span></div><div class="fa"><p>2024年5月1日。走过封禁与重建，运营800+天，成员5000+，频道100+。</p></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ TEAM ══ -->
+<section class="section">
+  <div class="sin sc">
+    <div class="badge r">幕后</div>
+    <h2 class="st r">谁在运营</h2>
+    <p class="sd r">两个人在不同城市，让这个社群每天在转。</p>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;max-width:400px;margin:0 auto">
+      <div class="card r" style="text-align:center;padding:28px 20px">
+        <div style="width:56px;height:56px;border-radius:50%;background:var(--g);margin:0 auto 12px;display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:700;color:#fff">低</div>
+        <h3 style="font-size:15px;font-weight:600;margin-bottom:2px">低毒</h3>
+        <p style="font-size:11px;color:var(--t3);margin-bottom:6px">主理人</p>
+        <p style="font-size:12px;color:var(--t2);line-height:1.6">内容、运营、社群——每天在做的事。</p>
+      </div>
+      <div class="card r r2" style="text-align:center;padding:28px 20px">
+        <div style="width:56px;height:56px;border-radius:50%;background:var(--g);margin:0 auto 12px;display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:700;color:#fff">小</div>
+        <h3 style="font-size:15px;font-weight:600;margin-bottom:2px">小z</h3>
+        <p style="font-size:11px;color:var(--t3);margin-bottom:6px">AI 工程师</p>
+        <p style="font-size:12px;color:var(--t2);line-height:1.6">自动化、数据、技术基建——幕后的齿轮。</p>
+      </div>
     </div>
   </div>
 </section>
