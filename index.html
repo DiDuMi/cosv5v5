@@ -9,7 +9,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&family=ZCOOL+QingKe+HuangYou&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth}
+html{scroll-behavior:smooth;scroll-padding-top:70px}
 body{
   font-family:'Noto Sans SC',system-ui,-apple-system,sans-serif;
   background:#060308;color:#e0d6e4;
@@ -61,7 +61,7 @@ nav.scrolled{background:rgba(6,3,8,0.93);border-color:var(--b)}
 
 /* ── Floating password ── */
 .floating-pwd{
-  display:none;position:fixed;bottom:20px;left:50%;transform:translateX(-50%);
+  position:fixed;bottom:20px;left:50%;transform:translateX(-50%);
   z-index:99;padding:10px 22px;border-radius:50px;
   background:rgba(22,10,40,0.85);backdrop-filter:blur(16px);
   border:1px solid rgba(245,158,11,0.15);
@@ -73,6 +73,8 @@ nav.scrolled{background:rgba(6,3,8,0.93);border-color:var(--b)}
 .floating-pwd:hover{background:rgba(30,14,50,0.9);border-color:var(--gold)}
 .floating-pwd.copied{background:rgba(34,197,94,0.15);border-color:#22c55e;color:#22c55e}
 @media(max-width:768px){.floating-pwd{display:inline-flex}}
+@media(min-width:769px){.floating-pwd{display:inline-flex;font-size:12px;padding:8px 18px;bottom:24px;opacity:0.8}}
+@media(min-width:769px){.floating-pwd:hover{opacity:1}}
 
 /* ── Hero (compact) ── */
 .hero{
@@ -137,21 +139,6 @@ nav.scrolled{background:rgba(6,3,8,0.93);border-color:var(--b)}
 .card .ic{font-size:20px;margin-bottom:8px;display:block}
 .card h3{font-size:14px;font-weight:600;margin-bottom:3px}
 .card p{font-size:12px;color:var(--t2);line-height:1.6}
-
-/* ── Showcase ── */
-.grid-4{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px;max-width:780px;margin:0 auto}
-.showcase{
-  aspect-ratio:3/4;border-radius:var(--r);
-  background:linear-gradient(135deg,rgba(22,10,40,0.3),rgba(12,6,22,0.4));
-  border:1px solid var(--b);
-  display:flex;align-items:center;justify-content:center;
-  position:relative;transition:all .4s;
-}
-.showcase:hover{border-color:rgba(167,139,250,0.1)}
-.showcase .ph{text-align:center;font-size:11px;color:var(--t3);padding:14px;line-height:1.6}
-.showcase .ph .b{font-size:22px;display:block;margin-bottom:4px}
-.showcase .ov{position:absolute;bottom:0;left:0;right:0;padding:10px;background:linear-gradient(transparent,rgba(6,3,8,0.8))}
-.showcase .ov span{font-size:10px;color:var(--t2)}
 
 /* ── About ── */
 .about-grid{display:grid;grid-template-columns:1fr 1fr;gap:28px;align-items:start}
@@ -273,7 +260,7 @@ footer .fl2 a:hover{color:var(--purple)}
     <div class="logo">COSV5</div>
     <div class="nav-links">
       <a href="#about">关于</a>
-      <a href="#精选">精选</a>
+      <a href="#showcase">精选</a>
       <a href="#pricing">定价</a>
       <a href="#faq">常见问题</a>
       <a href="#join" class="nav-cta">加入</a>
@@ -293,7 +280,7 @@ footer .fl2 a:hover{color:var(--purple)}
     </h1>
     <p>持有上百个 Cosplay 资源网站的付费账号，人工筛选后发布。不用盲下网盘包，TG 直接看全部媒体。</p>
     <div class="hero-actions">
-      <a href="#精选" class="btn-p">近期精选 →</a>
+      <a href="#showcase" class="btn-p">近期精选 →</a>
       <a href="#pricing" class="btn-s">查看定价</a>
     </div>
     <div class="hero-stats">
@@ -354,16 +341,15 @@ footer .fl2 a:hover{color:var(--purple)}
 </section>
 
 <!-- ══ SHOWCASE ══ -->
-<section class="section" id="精选">
+<section class="section" id="showcase">
   <div class="sin sc">
     <div class="badge r">近期精选</div>
     <h2 class="st r">精选作品一览</h2>
     <p class="sd r">加入社群即可查看全部媒体内容，直接预览，满意再下。</p>
-    <div class="grid-4">
-      <div class="showcase r"><div class="ph"><span class="b">🖼️</span>最新流出<br><span style="font-size:10px;color:var(--t3)">社群频道每日更新</span></div><div class="ov"><span>加入后查看</span></div></div>
-      <div class="showcase r r1"><div class="ph"><span class="b">🖼️</span>精选套图<br><span style="font-size:10px;color:var(--t3)">TG 直接预览</span></div><div class="ov"><span>高级含未流出资源</span></div></div>
-      <div class="showcase r r2"><div class="ph"><span class="b">🖼️</span>社群采购<br><span style="font-size:10px;color:var(--t3)">积分许愿</span></div><div class="ov"><span>成员指定采购</span></div></div>
-      <div class="showcase r r3"><div class="ph"><span class="b">🖼️</span>博主投稿<br><span style="font-size:10px;color:var(--t3)">高级专享</span></div><div class="ov"><span>社群投稿作品</span></div></div>
+    <div style="background:var(--card);border:1px solid var(--b);border-radius:var(--rl);padding:32px 24px;max-width:500px;margin:0 auto;text-align:center">
+      <p style="font-size:36px;margin-bottom:12px">🖼️</p>
+      <p style="font-size:14px;color:var(--t2);margin-bottom:16px;line-height:1.8">所有作品在 TG 频道直接预览<br>加入社群后即可查看全部媒体</p>
+      <a href="https://t.me/COSV5_COM" target="_blank" class="btn-p" style="display:inline-flex">前往主频道 →</a>
     </div>
   </div>
 </section>
