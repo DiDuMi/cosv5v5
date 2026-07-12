@@ -1,0 +1,833 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>COSV5 — 精致 Cosplay 精选社羣</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700;900&family=Noto+Sans+SC:wght@300;400;500;700&family=ZCOOL+QingKe+HuangYou&display=swap" rel="stylesheet">
+<style>
+/* ═══════════ RESET ═══════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  font-family:'Noto Sans SC',system-ui,-apple-system,sans-serif;
+  background:#08060a;
+  color:#e8e2e6;
+  -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+  line-height:1.7;
+}
+
+/* ═══════════ TOKENS ═══════════ */
+:root{
+  --bg-deep:#08060a;
+  --bg-surface:#0e0a14;
+  --bg-card:rgba(20,12,30,0.6);
+  --bg-card-hover:rgba(35,20,50,0.7);
+  
+  --purple:#a78bfa;
+  --purple-deep:#7c3aed;
+  --purple-glow:rgba(167,139,250,0.2);
+  --blue:#60a5fa;
+  --cyan:#67e8f9;
+  --gold:#f59e0b;
+  --gold-light:#fcd34d;
+  --rose:#fb7185;
+  
+  --text-primary:#f1eaef;
+  --text-secondary:#a89aa8;
+  --text-muted:#7a6a7a;
+  
+  --border:rgba(167,139,250,0.1);
+  --border-strong:rgba(167,139,250,0.18);
+  
+  --gradient-main:linear-gradient(135deg,#a78bfa,#60a5fa,#67e8f9);
+  --gradient-warm:linear-gradient(135deg,#a78bfa,#7c3aed,#f59e0b);
+  --gradient-glow:linear-gradient(135deg,rgba(167,139,250,0.12),rgba(96,165,250,0.05));
+  --gradient-gold:linear-gradient(135deg,#f59e0b,#fcd34d);
+  
+  --radius-sm:8px;
+  --radius-md:14px;
+  --radius-lg:24px;
+}
+
+/* ═══════════ SCROLLBAR ═══════════ */
+::-webkit-scrollbar{width:4px}
+::-webkit-scrollbar-track{background:var(--bg-deep)}
+::-webkit-scrollbar-thumb{background:var(--purple-deep);border-radius:4px}
+
+/* ═══════════ CANVAS ═══════════ */
+#particle-canvas{
+  position:fixed;top:0;left:0;
+  width:100vw;height:100vh;
+  z-index:0;pointer-events:none;
+}
+
+/* ═══════════ HEADER ═══════════ */
+.header{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  padding:16px 0;
+  backdrop-filter:blur(24px) saturate(1.5);
+  -webkit-backdrop-filter:blur(24px) saturate(1.5);
+  background:rgba(8,6,10,0.6);
+  border-bottom:1px solid transparent;
+  transition:background .4s,border-color .4s;
+}
+.header.scrolled{
+  background:rgba(8,6,10,0.92);
+  border-bottom-color:var(--border);
+}
+.header-inner{
+  max-width:1200px;margin:0 auto;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 28px;
+}
+.logo{
+  font-family:'ZCOOL QingKe HuangYou',cursive;
+  font-size:26px;letter-spacing:3px;
+  background:var(--gradient-main);
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+  background-clip:text;
+}
+.nav{display:flex;gap:32px;align-items:center}
+.nav a{
+  color:var(--text-secondary);text-decoration:none;
+  font-size:14px;font-weight:500;
+  transition:color .3s;position:relative;
+}
+.nav a::after{
+  content:'';position:absolute;bottom:-5px;left:0;
+  width:0;height:1.5px;
+  background:var(--gradient-main);
+  transition:width .3s;border-radius:2px;
+}
+.nav a:hover{color:var(--text-primary)}
+.nav a:hover::after{width:100%}
+.header-cta{
+  padding:9px 24px;border-radius:50px;
+  background:var(--gradient-warm);
+  color:#fff;text-decoration:none;
+  font-size:13px;font-weight:600;
+  transition:transform .3s,box-shadow .3s;
+  box-shadow:0 0 24px rgba(167,139,250,0.25);
+}
+.header-cta:hover{transform:translateY(-1px);box-shadow:0 0 36px rgba(167,139,250,0.35)}
+
+/* ═══════════ HERO ═══════════ */
+.hero{
+  position:relative;z-index:1;
+  min-height:100vh;
+  display:flex;align-items:center;justify-content:center;
+  text-align:center;
+  padding:120px 24px 80px;
+  overflow:hidden;
+}
+.hero::before{
+  content:'';position:absolute;
+  top:-30%;left:-20%;width:140%;height:80%;
+  background:radial-gradient(ellipse at 50% 50%,rgba(124,58,237,0.08),transparent 70%);
+  pointer-events:none;
+}
+.hero-content{max-width:780px;position:relative}
+.hero-badge{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:6px 20px;border-radius:50px;
+  background:rgba(245,158,11,0.08);
+  border:1px solid rgba(245,158,11,0.15);
+  font-size:12px;font-weight:600;letter-spacing:2px;
+  color:var(--gold);margin-bottom:28px;
+  text-transform:uppercase;
+}
+.hero-sub{
+  font-family:'Noto Serif SC',serif;
+  font-size:clamp(14px,2vw,18px);
+  color:var(--gold-light);
+  margin-bottom:20px;
+  opacity:0.7;
+  letter-spacing:6px;
+}
+.hero h1{
+  font-family:'Noto Serif SC',serif;
+  font-size:clamp(32px,6vw,64px);
+  font-weight:900;
+  line-height:1.15;
+  margin-bottom:24px;
+}
+.hero h1 .line1{
+  background:linear-gradient(135deg,#f1eaef 40%,var(--purple) 80%);
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+  background-clip:text;
+}
+.hero h1 .line2{
+  background:linear-gradient(135deg,var(--purple),var(--gold-light));
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+  background-clip:text;
+}
+.hero-desc{
+  font-size:clamp(15px,1.8vw,18px);
+  color:var(--text-secondary);
+  max-width:580px;margin:0 auto 36px;
+  line-height:1.9;
+}
+.hero-actions{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+.btn-primary{
+  padding:14px 34px;border-radius:50px;
+  background:var(--gradient-warm);
+  color:#fff;text-decoration:none;
+  font-size:15px;font-weight:600;
+  transition:transform .3s,box-shadow .3s;
+  box-shadow:0 0 30px var(--purple-glow);
+  border:none;cursor:pointer;
+  display:inline-flex;align-items:center;gap:8px;
+}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 0 45px rgba(167,139,250,0.3)}
+.btn-secondary{
+  padding:14px 34px;border-radius:50px;
+  background:rgba(255,255,255,0.03);
+  color:var(--text-primary);text-decoration:none;
+  font-size:15px;font-weight:500;
+  border:1px solid var(--border);
+  transition:background .3s,border-color .3s;
+  display:inline-flex;align-items:center;gap:8px;
+}
+.btn-secondary:hover{background:rgba(255,255,255,0.06);border-color:rgba(167,139,250,0.2)}
+
+/* ═══════════ SECTION ═══════════ */
+.section{
+  position:relative;z-index:1;
+  padding:100px 28px;
+}
+.section-inner{max-width:1100px;margin:0 auto}
+.section-label{
+  font-family:'Noto Serif SC',serif;
+  font-size:13px;font-weight:600;
+  color:var(--gold);
+  letter-spacing:4px;
+  margin-bottom:10px;
+}
+.section-title{
+  font-family:'Noto Serif SC',serif;
+  font-size:clamp(26px,3.5vw,40px);
+  font-weight:700;
+  margin-bottom:14px;
+  line-height:1.25;
+}
+.section-desc{
+  color:var(--text-secondary);
+  font-size:15px;
+  max-width:560px;
+  margin-bottom:48px;
+  line-height:1.8;
+}
+
+/* ═══════════ FEATURES ═══════════ */
+.features-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+  gap:20px;
+}
+.feature-card{
+  padding:36px 30px;
+  border-radius:var(--radius-md);
+  background:var(--bg-card);
+  border:1px solid var(--border);
+  backdrop-filter:blur(12px);
+  transition:transform .4s,background .3s,border-color .3s;
+}
+.feature-card:hover{
+  transform:translateY(-5px);
+  background:var(--bg-card-hover);
+  border-color:rgba(167,139,250,0.2);
+}
+.feature-icon{
+  font-size:28px;margin-bottom:16px;
+  display:block;
+}
+.feature-card h3{font-size:17px;font-weight:600;margin-bottom:8px;color:var(--text-primary)}
+.feature-card p{font-size:14px;color:var(--text-secondary);line-height:1.8}
+
+.feature-card.gossip{
+  background:rgba(245,158,11,0.04);
+  border-color:rgba(245,158,11,0.12);
+}
+.feature-card.gossip:hover{border-color:rgba(245,158,11,0.2)}
+.feature-card.gossip h3{color:var(--gold-light)}
+
+/* ═══════════ GOSSIP SECTION ═══════════ */
+.gossip-section{
+  border-top:1px solid var(--border);
+  border-bottom:1px solid var(--border);
+}
+.gossip-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
+  gap:20px;
+}
+.gossip-card{
+  padding:28px 24px;
+  border-radius:var(--radius-md);
+  background:rgba(245,158,11,0.03);
+  border:1px solid rgba(245,158,11,0.08);
+  transition:all .3s;
+  position:relative;
+}
+.gossip-card:hover{
+  border-color:rgba(245,158,11,0.18);
+  background:rgba(245,158,11,0.05);
+}
+.gossip-card .tag{
+  display:inline-block;
+  padding:2px 10px;
+  border-radius:50px;
+  background:rgba(245,158,11,0.1);
+  color:var(--gold-light);
+  font-size:11px;font-weight:600;
+  margin-bottom:10px;
+  letter-spacing:1px;
+}
+.gossip-card h4{
+  font-size:16px;font-weight:600;
+  margin-bottom:8px;
+  color:var(--text-primary);
+}
+.gossip-card p{
+  font-size:13px;color:var(--text-secondary);
+  line-height:1.7;
+}
+.gossip-card .hint{
+  margin-top:10px;
+  font-size:12px;
+  color:var(--text-muted);
+  display:flex;align-items:center;gap:6px;
+}
+.gossip-card .hint .hot{
+  color:var(--rose);
+  font-weight:600;
+}
+
+/* ═══════════ SHOWCASE ═══════════ */
+.showcase-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+  gap:16px;
+}
+.showcase-item{
+  aspect-ratio:3/4;
+  border-radius:var(--radius-sm);
+  background:var(--bg-card);
+  border:1px solid var(--border);
+  overflow:hidden;
+  display:flex;align-items:center;justify-content:center;
+  position:relative;
+  transition:all .3s;
+}
+.showcase-item:hover{
+  transform:translateY(-3px);
+  border-color:rgba(167,139,250,0.2);
+  box-shadow:0 8px 30px rgba(167,139,250,0.08);
+}
+.showcase-item .placeholder{
+  text-align:center;
+  font-size:13px;color:var(--text-muted);
+  padding:20px;
+  line-height:1.6;
+}
+.showcase-item .placeholder .big{
+  font-size:32px;display:block;margin-bottom:8px;
+}
+.showcase-item .overlay{
+  position:absolute;bottom:0;left:0;right:0;
+  padding:16px;
+  background:linear-gradient(transparent,rgba(8,6,10,0.85));
+}
+.showcase-item .overlay span{
+  font-size:12px;color:var(--text-secondary);
+}
+
+/* ═══════════ PRICING ═══════════ */
+.pricing-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
+  gap:24px;
+}
+.pricing-card{
+  padding:44px 34px;
+  border-radius:var(--radius-lg);
+  background:var(--bg-card);
+  border:1px solid var(--border);
+  backdrop-filter:blur(10px);
+  position:relative;
+  transition:transform .4s;
+}
+.pricing-card:hover{transform:translateY(-4px)}
+.pricing-card.featured{
+  border-color:rgba(167,139,250,0.2);
+  background:rgba(20,12,30,0.8);
+  box-shadow:0 0 50px rgba(167,139,250,0.06),inset 0 1px 0 rgba(167,139,250,0.12);
+}
+.pricing-badge{
+  position:absolute;top:-12px;left:50%;transform:translateX(-50%);
+  padding:4px 20px;border-radius:50px;
+  background:var(--gradient-gold);
+  color:#0a0a0a;
+  font-size:11px;font-weight:700;letter-spacing:1px;
+  white-space:nowrap;
+}
+.pricing-name{font-size:18px;font-weight:600;margin-bottom:2px}
+.pricing-sub{font-size:13px;color:var(--text-muted);margin-bottom:20px}
+.pricing-price{margin-bottom:20px}
+.pricing-price .amount{
+  font-size:40px;font-weight:700;
+  background:var(--gradient-main);
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+  background-clip:text;
+}
+.pricing-price .period{font-size:14px;color:var(--text-secondary);margin-left:4px}
+.pricing-options{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px}
+.pricing-option{
+  padding:5px 14px;border-radius:50px;
+  background:rgba(255,255,255,0.03);
+  border:1px solid var(--border);
+  font-size:12px;color:var(--text-secondary);
+}
+.pricing-features{list-style:none;margin-bottom:28px}
+.pricing-features li{
+  padding:7px 0;
+  font-size:14px;color:var(--text-secondary);
+  display:flex;align-items:center;gap:10px;
+}
+.pricing-features li::before{content:'✦';color:var(--purple);font-size:12px}
+.pricing-card .btn-primary,.pricing-card .btn-secondary{display:flex;justify-content:center}
+
+/* ═══════════ CHANNEL MATRIX ═══════════ */
+.channel-section{border-top:1px solid var(--border)}
+.channel-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(150px,1fr));
+  gap:10px;
+}
+.channel-chip{
+  display:flex;align-items:center;gap:8px;
+  padding:10px 14px;border-radius:50px;
+  background:var(--bg-card);
+  border:1px solid var(--border);
+  font-size:13px;font-weight:500;
+  color:var(--text-secondary);
+  text-decoration:none;
+  transition:all .3s;
+  justify-content:center;
+}
+.channel-chip:hover{
+  background:var(--bg-card-hover);
+  border-color:var(--border-strong);
+  color:var(--text-primary);
+  transform:translateY(-2px);
+}
+.channel-chip .lang{color:var(--purple);font-size:11px;font-weight:600}
+.channel-chip .gold{color:var(--gold)}
+
+/* ═══════════ FAQ ═══════════ */
+.faq-list{max-width:740px;margin:0 auto}
+.faq-item{border-bottom:1px solid var(--border);padding:0}
+.faq-q{
+  padding:22px 0;
+  display:flex;justify-content:space-between;align-items:center;
+  cursor:pointer;
+  font-size:15px;font-weight:500;
+  color:var(--text-primary);
+  transition:color .3s;
+  user-select:none;gap:16px;
+}
+.faq-q:hover{color:var(--purple)}
+.faq-q .arrow{transition:transform .4s;color:var(--text-muted);flex-shrink:0}
+.faq-item.open .faq-q .arrow{transform:rotate(180deg);color:var(--purple)}
+.faq-a{
+  max-height:0;overflow:hidden;
+  transition:max-height .4s ease,padding .4s ease;
+  padding:0;
+}
+.faq-item.open .faq-a{
+  max-height:400px;
+  padding:0 0 22px;
+}
+.faq-a p{font-size:14px;color:var(--text-secondary);line-height:1.8}
+
+/* ═══════════ CTA ═══════════ */
+.cta-section{
+  text-align:center;
+  border-top:1px solid var(--border);
+  border-bottom:1px solid var(--border);
+  background:radial-gradient(ellipse at 50% 100%,rgba(124,58,237,0.05),transparent 70%);
+}
+.cta-section h2{font-size:clamp(24px,3.5vw,36px);font-weight:700;margin-bottom:14px}
+.cta-section p{color:var(--text-secondary);max-width:520px;margin:0 auto 28px;font-size:15px}
+.cta-actions{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+.cta-note{margin-top:14px;font-size:13px;color:var(--text-muted)}
+
+/* ═══════════ FOOTER ═══════════ */
+.footer{
+  position:relative;z-index:1;
+  padding:48px 28px;text-align:center;
+}
+.footer-inner{max-width:1100px;margin:0 auto}
+.footer .logo{font-size:22px;margin-bottom:6px}
+.footer p{font-size:12px;color:var(--text-muted)}
+.footer-links{display:flex;justify-content:center;gap:24px;margin:14px 0;flex-wrap:wrap}
+.footer-links a{color:var(--text-muted);text-decoration:none;font-size:12px;transition:color .3s}
+.footer-links a:hover{color:var(--purple)}
+
+/* ═══════════ REVEAL ═══════════ */
+.reveal{opacity:0;transform:translateY(24px);transition:opacity .7s ease,transform .7s ease}
+.reveal.visible{opacity:1;transform:translateY(0)}
+.reveal-d1{transition-delay:0.1s}
+.reveal-d2{transition-delay:0.2s}
+.reveal-d3{transition-delay:0.3s}
+.reveal-d4{transition-delay:0.4s}
+
+/* ═══════════ RESPONSIVE ═══════════ */
+@media(max-width:768px){
+  .nav{display:none}
+  .hero-stats{gap:24px}
+  .hero-stats .num{font-size:26px}
+  .pricing-grid{grid-template-columns:1fr}
+  .features-grid{grid-template-columns:1fr}
+  .gossip-grid{grid-template-columns:1fr}
+  .showcase-grid{grid-template-columns:repeat(2,1fr)}
+}
+</style>
+</head>
+<body>
+
+<canvas id="particle-canvas"></canvas>
+
+<header class="header" id="header">
+  <div class="header-inner">
+    <div class="logo">COSV5</div>
+    <nav class="nav">
+      <a href="#features">精选</a>
+      <a href="#gossip">圈内</a>
+      <a href="#pricing">定价</a>
+      <a href="#faq">FAQ</a>
+      <a href="#join" class="header-cta">加入</a>
+    </nav>
+  </div>
+</header>
+
+<!-- ══ HERO ══ -->
+<section class="hero">
+  <div class="hero-content reveal visible">
+    <div class="hero-badge">✦ 全网最快流出社群</div>
+    <div class="hero-sub">— EXQUISITE COSPLAY COLLECTION —</div>
+    <h1>
+      <span class="line1">百站精选，直接预览</span><br>
+      <span class="line2">精致 Cosplay 幻想世界</span>
+    </h1>
+    <p class="hero-desc">
+      我们持有上百个 Cosplay 资源站的付费会员，<br>
+      实时监控全网新作。<strong style="color:var(--text-primary)">无需盲下网盘包</strong>，TG 直接预览全部媒体。
+    </p>
+    <div class="hero-actions">
+      <a href="#pricing" class="btn-primary">探索更多 🚀</a>
+      <a href="#gossip" class="btn-secondary">圈内动态 →</a>
+    </div>
+  </div>
+</section>
+
+<!-- ══ FEATURES ══ -->
+<section class="section" id="features">
+  <div class="section-inner">
+    <div class="section-label reveal">精选 · CURATION</div>
+    <h2 class="section-title reveal">关于 COSV5</h2>
+    <p class="section-desc reveal">上百个资源站的人工精选，在 TG 直接预览全部——这是我们对"精致"的定义。</p>
+    <div class="features-grid">
+      <div class="feature-card reveal">
+        <span class="feature-icon">🔮</span>
+        <h3>百站会员 · 人工精选</h3>
+        <p>持有 59+ 资源站付费会员，pabot 实时监控新作。每一份资源都是人工筛选，只发布最精致的作品。</p>
+      </div>
+      <div class="feature-card reveal reveal-d1">
+        <span class="feature-icon">👁️</span>
+        <h3>TG 直接预览 · 告别盲盒</h3>
+        <p>传统网站需要下载网盘包才能看内容。在 COSV5，所有作品在 Telegram 直接预览全部媒体，满意再下载。</p>
+      </div>
+      <div class="feature-card gossip reveal reveal-d2">
+        <span class="feature-icon">🍉</span>
+        <h3>圈内吃瓜 · 博主动态</h3>
+        <p>关注 Cosplay 博主圈的最新动态、热议话题、幕后故事。不只是资源，更是圈子。</p>
+      </div>
+      <div class="feature-card reveal reveal-d1">
+        <span class="feature-icon">🌐</span>
+        <h3>多语言矩阵</h3>
+        <p>中文 · English · 日本語 · Русский · ไทย · 한국어 ……全球同好聚集地。</p>
+      </div>
+      <div class="feature-card reveal reveal-d2">
+        <span class="feature-icon">🎯</span>
+        <h3>社群采购 + 许愿系统</h3>
+        <p>热门新作社群出资采购。你还可以使用签到积分兑换许愿卡，指定想要的作品。</p>
+      </div>
+      <div class="feature-card reveal reveal-d3">
+        <span class="feature-icon">⚡</span>
+        <h3>全网最快流出</h3>
+        <p>pabot 7×24 小时监控，新作发布立即通知。比你自己刷站快得多。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ GOSSIP ══ -->
+<section class="section gossip-section" id="gossip">
+  <div class="section-inner">
+    <div class="section-label reveal">吃瓜 · GOSSIP</div>
+    <h2 class="section-title reveal">博主圈动态</h2>
+    <p class="section-desc reveal">不只是资源——我们关注 Cosplay 博主圈的一切。热门话题、幕后花絮、圈内热议。</p>
+    <div class="gossip-grid">
+      <div class="gossip-card reveal">
+        <span class="tag">🔥 热议</span>
+        <h4>近期话题：作品的"尺度"边界在哪里？</h4>
+        <p>多位知名博主近期在社交平台讨论 Cosplay 作品的艺术表达与尺度划分，引发社群热议。社群内已有完整讨论整理。</p>
+        <div class="hint"><span class="hot">🔥</span> 社群内查看完整讨论</div>
+      </div>
+      <div class="gossip-card reveal reveal-d1">
+        <span class="tag">📸 幕后</span>
+        <h4>从拍摄到精修：一套作品的诞生过程</h4>
+        <p>博主分享了一套套图的完整幕后流程：选角、妆造、布光、拍摄、后期……远比想象中复杂。懂行的更懂欣赏。</p>
+        <div class="hint">📷 含原片对比 · 社群专享</div>
+      </div>
+      <div class="gossip-card reveal reveal-d2">
+        <span class="tag">💬 圈内</span>
+        <h4>博主动态速递 · 你关注的人在做什么</h4>
+        <p>汇总近期 Cosplay 博主们的动向：新作品发布、合作预告、社交平台动态。不追星，但可以追作品。</p>
+        <div class="hint">🔄 每日更新 · 社群频道推送</div>
+      </div>
+    </div>
+    <div style="text-align:center;margin-top:28px">
+      <a href="https://t.me/COSV5Nav" target="_blank" class="btn-secondary" style="display:inline-flex">更多动态 →</a>
+    </div>
+  </div>
+</section>
+
+<!-- ══ SHOWCASE ══ -->
+<section class="section">
+  <div class="section-inner">
+    <div class="section-label reveal">预览 · PREVIEW</div>
+    <h2 class="section-title reveal">精选作品一览</h2>
+    <p class="section-desc reveal">精致作品直接预览，告别网盘盲盒。加入社群即可查看全部媒体。</p>
+    <div class="showcase-grid">
+      <div class="showcase-item reveal">
+        <div class="placeholder"><span class="big">🖼️</span>精选作品预览<br><span style="font-size:12px;color:var(--text-muted)">加入后查看全部</span></div>
+        <div class="overlay"><span>限时精选 · 社群查看</span></div>
+      </div>
+      <div class="showcase-item reveal reveal-d1">
+        <div class="placeholder"><span class="big">🖼️</span>精致 Cos 套图<br><span style="font-size:12px;color:var(--text-muted)">TG 直接预览</span></div>
+        <div class="overlay"><span>最新流出 · 社群查看</span></div>
+      </div>
+      <div class="showcase-item reveal reveal-d2">
+        <div class="placeholder"><span class="big">🖼️</span>博主精选合集<br><span style="font-size:12px;color:var(--text-muted)">高级社群抢先看</span></div>
+        <div class="overlay"><span>社群采购 · 独家</span></div>
+      </div>
+      <div class="showcase-item reveal reveal-d3">
+        <div class="placeholder"><span class="big">🖼️</span>热门角色套图<br><span style="font-size:12px;color:var(--text-muted)">pabot 实时监控</span></div>
+        <div class="overlay"><span>全网最快 · 社群查看</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ PRICING ══ -->
+<section class="section" id="pricing">
+  <div class="section-inner">
+    <div class="section-label reveal">定价 · PRICING</div>
+    <h2 class="section-title reveal">选择你的方案</h2>
+    <div class="pricing-grid">
+      <div class="pricing-card reveal">
+        <div class="pricing-name">🌱 初级</div>
+        <div class="pricing-sub">每日精选 · 入门体验</div>
+        <div class="pricing-price"><span class="amount">¥18</span><span class="period">/月</span></div>
+        <div class="pricing-options"><span class="pricing-option">¥36/年</span><span class="pricing-option">¥66/永久</span></div>
+        <ul class="pricing-features">
+          <li>全网流出资源每日更新</li>
+          <li>TG 直接预览全部媒体</li>
+          <li>高级资源延后约1周预览</li>
+          <li>以图搜图 + 频道搜索</li>
+          <li>签到积分系统</li>
+        </ul>
+        <a href="https://t.me/V5joinBot" target="_blank" class="btn-secondary" style="display:flex;justify-content:center">立即加入</a>
+      </div>
+      <div class="pricing-card featured reveal reveal-d2">
+        <div class="pricing-badge">⭐ 推荐</div>
+        <div class="pricing-name">🎄 高级</div>
+        <div class="pricing-sub">未流出资源 + 抢先体验</div>
+        <div class="pricing-price"><span class="amount">¥198</span><span class="period">/年</span></div>
+        <div class="pricing-options"><span class="pricing-option">¥288/永久</span><span class="pricing-option">🔥 热销</span></div>
+        <ul class="pricing-features">
+          <li>含初级全部权益</li>
+          <li>未流出资源包（投稿+采购）</li>
+          <li>高级资源第一时间查看</li>
+          <li>网站内容搜索权限</li>
+          <li>许愿卡 · 积分兑换特权</li>
+        </ul>
+        <a href="https://t.me/V5joinBot" target="_blank" class="btn-primary" style="display:flex;justify-content:center">立即加入 🚀</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ CHANNELS ══ -->
+<section class="section channel-section" id="channels">
+  <div class="section-inner">
+    <div class="section-label reveal">频道 · CHANNELS</div>
+    <h2 class="section-title reveal">全球频道矩阵</h2>
+    <p class="section-desc reveal">10+ 语言频道，随时随地发现精彩</p>
+    <div class="channel-grid">
+      <a class="channel-chip" href="https://t.me/COSV5Nav" target="_blank"><span class="lang gold">★</span> 导航 @COSV5Nav</a>
+      <a class="channel-chip" href="https://t.me/COSV5_COM" target="_blank"><span class="lang gold">★</span> 主频道 @COSV5_COM</a>
+      <a class="channel-chip" href="https://t.me/COSV5CN" target="_blank"><span class="lang gold">★</span> @COSV5CN 中文</a>
+      <a class="channel-chip" href="https://t.me/COSV5_VIP" target="_blank"><span class="lang">VIP</span> @COSV5_VIP 高级</a>
+      <a class="channel-chip" href="https://t.me/COSV5ENG" target="_blank"><span class="lang">EN</span> @COSV5ENG</a>
+      <a class="channel-chip" href="https://t.me/COSV5jap" target="_blank"><span class="lang">JA</span> @COSV5jap</a>
+      <a class="channel-chip" href="https://t.me/COSV5RUS" target="_blank"><span class="lang">RU</span> @COSV5RUS</a>
+      <a class="channel-chip" href="https://t.me/COSV5Thai" target="_blank"><span class="lang">TH</span> @COSV5Thai</a>
+      <a class="channel-chip" href="https://t.me/COSV5Kor" target="_blank"><span class="lang">KO</span> @COSV5Kor</a>
+      <a class="channel-chip" href="https://t.me/COSV5FR" target="_blank"><span class="lang">FR</span> @COSV5FR</a>
+      <a class="channel-chip" href="https://t.me/COSV5DE" target="_blank"><span class="lang">DE</span> @COSV5DE</a>
+      <a class="channel-chip" href="https://t.me/COSV5Hindi" target="_blank"><span class="lang">HI</span> @COSV5Hindi</a>
+    </div>
+    <div style="margin-top:22px;text-align:center">
+      <a href="https://t.me/V5CSRbot" target="_blank" class="btn-secondary" style="display:inline-flex">💬 客服 @V5CSRbot</a>
+    </div>
+  </div>
+</section>
+
+<!-- ══ FAQ ══ -->
+<section class="section" id="faq">
+  <div class="section-inner">
+    <div class="section-label reveal">FAQ</div>
+    <h2 class="section-title reveal">常见问题</h2>
+    <div class="faq-list">
+      <div class="faq-item reveal">
+        <div class="faq-q">初级和高级有什么区别？<span class="arrow">▼</span></div>
+        <div class="faq-a"><p>初级每日获取全网流出资源，高级资源预览延后约1周。高级含初级全部权益，额外享有未流出资源包（投稿+采购），且高级资源第一时间查看，无需等待下放。</p></div>
+      </div>
+      <div class="faq-item reveal">
+        <div class="faq-q">付款后怎么加入？<span class="arrow">▼</span></div>
+        <div class="faq-a"><p>通过 @V5joinBot 完成支付后自动引导加入社群群组和频道。如有问题请联系 @V5CSRbot。</p></div>
+      </div>
+      <div class="faq-item reveal">
+        <div class="faq-q">和传统资源网站比好在哪里？<span class="arrow">▼</span></div>
+        <div class="faq-a"><p>最大区别：TG 直接预览全部媒体，无需盲下网盘包。我们持有上百个付费站会员，人工筛选后再发布，保证每份资源都是精品。</p></div>
+      </div>
+      <div class="faq-item reveal">
+        <div class="faq-q">"圈内动态"是什么？<span class="arrow">▼</span></div>
+        <div class="faq-a"><p>我们关注 Cosplay 博主圈的最新动态——热门话题、幕后故事、博主动态速递。不只是资源搬运，这是一个有温度的圈子。</p></div>
+      </div>
+      <div class="faq-item reveal">
+        <div class="faq-q">高级社群的未流出资源怎么来？<span class="arrow">▼</span></div>
+        <div class="faq-a"><p>三个来源：社群成员投稿、社群出资采购热门新作、群友用积分兑换许愿卡。当资源被"流出"公开后，会下放发布到初级社群。</p></div>
+      </div>
+      <div class="faq-item reveal">
+        <div class="faq-q">有打包下载吗？<span class="arrow">▼</span></div>
+        <div class="faq-a"><p>目前通过 TG 频道直接预览和下载。正在开发打包功能。核心体验：无需盲下，先看再下——比网站盲下网盘包好得多。</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ CTA ══ -->
+<section class="section cta-section" id="join">
+  <div class="section-inner">
+    <h2 class="reveal">加入 COSV5</h2>
+    <p class="reveal">¥18 起，体验上百个资源站的人工精选。<br>TG 直接预览全部，满意再下载。</p>
+    <div class="cta-actions reveal">
+      <a href="https://t.me/V5joinBot" target="_blank" class="btn-primary">立即加入 🚀</a>
+      <a href="https://t.me/COSV5Nav" target="_blank" class="btn-secondary">先逛逛 →</a>
+    </div>
+    <div class="cta-note">有问题？联系 @V5CSRbot</div>
+  </div>
+</section>
+
+<!-- ══ FOOTER ══ -->
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="logo">COSV5</div>
+    <div class="footer-links">
+      <a href="https://t.me/COSV5Nav" target="_blank">频道导航</a>
+      <a href="https://t.me/V5joinBot" target="_blank">购买会员</a>
+      <a href="https://t.me/V5CSRbot" target="_blank">联系客服</a>
+      <a href="https://cosv5.vip" target="_blank">官网</a>
+    </div>
+    <p>© 2026 COSV5 · 让流通的作品触达更多热爱的人</p>
+  </div>
+</footer>
+
+<script>
+// ══ PARTICLE BACKGROUND ══
+const canvas=document.getElementById('particle-canvas');
+const ctx=canvas.getContext('2d');
+let particles=[],W,H,frame=0;
+
+function resize(){W=canvas.width=window.innerWidth;H=canvas.height=window.innerHeight}
+window.addEventListener('resize',resize);resize();
+
+class Particle{
+  constructor(){
+    this.x=Math.random()*W;
+    this.y=Math.random()*H;
+    this.size=Math.random()*2+0.8;
+    this.speedX=(Math.random()-0.5)*0.25;
+    this.speedY=(Math.random()-0.5)*0.25;
+    this.opacity=Math.random()*0.4+0.08;
+    this.hue=Math.random()*40+250;
+  }
+  update(){
+    this.x+=this.speedX+Math.sin(frame*0.001+this.y*0.008)*0.08;
+    this.y+=this.speedY+Math.cos(frame*0.001+this.x*0.008)*0.08;
+    if(this.x<0)this.x=W;if(this.x>W)this.x=0;
+    if(this.y<0)this.y=H;if(this.y>H)this.y=0;
+  }
+  draw(){
+    ctx.beginPath();
+    ctx.arc(this.x,this.y,this.size,0,Math.PI*2);
+    ctx.fillStyle=`hsla(${this.hue},60%,65%,${this.opacity})`;
+    ctx.fill();
+  }
+}
+for(let i=0;i<100;i++)particles.push(new Particle());
+
+function connect(){
+  for(let i=0;i<particles.length;i++)
+    for(let j=i+1;j<particles.length;j++){
+      let dx=particles[i].x-particles[j].x,dy=particles[i].y-particles[j].y;
+      let d=Math.sqrt(dx*dx+dy*dy);
+      if(d<160){
+        ctx.beginPath();ctx.moveTo(particles[i].x,particles[i].y);
+        ctx.lineTo(particles[j].x,particles[j].y);
+        ctx.strokeStyle=`rgba(167,139,250,${(1-d/160)*0.06})`;
+        ctx.stroke();
+      }
+    }
+}
+function animate(){frame++;ctx.clearRect(0,0,W,H);particles.forEach(p=>{p.update();p.draw()});connect();requestAnimationFrame(animate)}
+animate();
+
+// ══ HEADER ══
+window.addEventListener('scroll',()=>document.getElementById('header').classList.toggle('scrolled',window.scrollY>50));
+
+// ══ REVEAL ══
+const ro=new IntersectionObserver((entries)=>{entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');ro.unobserve(e.target)}})},{threshold:0.08});
+document.querySelectorAll('.reveal').forEach(el=>ro.observe(el));
+
+// ══ FAQ ══
+document.querySelectorAll('.faq-q').forEach(q=>{
+  q.addEventListener('click',()=>{
+    const item=q.closest('.faq-item'),open=item.classList.contains('open');
+    document.querySelectorAll('.faq-item.open').forEach(i=>i.classList.remove('open'));
+    if(!open)item.classList.add('open');
+  });
+});
+</script>
+</body>
+</html>
