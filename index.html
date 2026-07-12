@@ -42,14 +42,15 @@ nav{
   transition:background .4s,border-color .4s;
 }
 nav.scrolled{background:rgba(6,3,8,0.93);border-color:var(--b)}
-.nav-inner{max-width:1100px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;padding:0 24px;height:60px}
+.nav-inner{max-width:1100px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;padding:0 20px;height:56px}
 .nav-logo{
-  font-family:'ZCOOL QingKe HuangYou',cursive;font-size:22px;letter-spacing:3px;
+  font-family:'ZCOOL QingKe HuangYou',cursive;font-size:20px;letter-spacing:3px;
   background:var(--g);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  white-space:nowrap;
 }
-.nav-links{display:flex;gap:6px;align-items:center}
+.nav-links{display:flex;gap:4px;align-items:center}
 .nav-links a{
-  padding:6px 16px;border-radius:50px;
+  padding:5px 12px;border-radius:50px;
   color:var(--t2);text-decoration:none;
   font-size:13px;font-weight:500;
   transition:all .3s;
@@ -57,24 +58,42 @@ nav.scrolled{background:rgba(6,3,8,0.93);border-color:var(--b)}
 .nav-links a:hover{color:var(--t);background:rgba(255,255,255,0.03)}
 .nav-links .active{color:var(--purple);background:rgba(167,139,250,0.06)}
 .nav-cta{
-  padding:7px 20px;border-radius:50px;
-  background:var(--gw);color:#fff;font-size:13px;font-weight:600;
+  padding:6px 16px;border-radius:50px;
+  background:var(--gw);color:#fff;font-size:12px;font-weight:600;
   text-decoration:none;transition:all .3s;
   box-shadow:0 0 18px var(--p-glow);
+  white-space:nowrap;
 }
 .nav-cta:hover{transform:translateY(-1px);box-shadow:0 0 28px rgba(167,139,250,0.2)}
 .nav-pwd{
-  padding:6px 14px;border-radius:50px;
+  display:inline-flex;align-items:center;gap:4px;
+  padding:5px 12px;border-radius:50px;
   background:rgba(245,158,11,0.06);
   border:1px solid rgba(245,158,11,0.12);
-  color:var(--gold);font-size:12px;font-weight:600;
+  color:var(--gold);font-size:11px;font-weight:600;
   cursor:pointer;transition:all .3s;
-  font-family:inherit;letter-spacing:1px;
-  display:inline-flex;align-items:center;gap:5px;
+  font-family:inherit;white-space:nowrap;
+}
+.nav-pwd:hover{background:rgba(245,158,11,0.1);border-color:var(--gold)}
+.nav-pwd.copied{background:rgba(34,197,94,0.1);border-color:rgba(34,197,94,0.2);color:#22c55e}
+.nav-pwd .pwd-label{display:none}
+@media(min-width:769px){.nav-pwd .pwd-label{display:inline}}
+
+/* ── Floating password button (mobile) ── */
+.floating-pwd{
+  display:none;position:fixed;bottom:20px;left:50%;transform:translateX(-50%);
+  z-index:99;padding:10px 24px;border-radius:50px;
+  background:rgba(22,10,40,0.85);backdrop-filter:blur(16px);
+  border:1px solid rgba(245,158,11,0.15);
+  color:var(--gold);font-size:13px;font-weight:600;
+  cursor:pointer;transition:all .3s;
+  font-family:inherit;align-items:center;gap:6px;
+  box-shadow:0 4px 20px rgba(0,0,0,0.3);
   white-space:nowrap;
 }
-.nav-pwd:hover{background:rgba(245,158,11,0.1);border-color:var(--gold);transform:translateY(-1px)}
-.nav-pwd.copied{background:rgba(34,197,94,0.1);border-color:rgba(34,197,94,0.2);color:#22c55e}
+.floating-pwd:hover{background:rgba(30,14,50,0.9);border-color:var(--gold)}
+.floating-pwd.copied{background:rgba(34,197,94,0.15);border-color:#22c55e;color:#22c55e}
+@media(max-width:768px){.floating-pwd{display:inline-flex}}
 
 /* ── Sections ── */
 .section{position:relative;z-index:1;padding:100px 24px 80px;min-height:100vh;display:flex;align-items:center}
@@ -284,11 +303,13 @@ footer .fl2 a:hover{color:var(--purple)}
       <a href="#精选">精选</a>
       <a href="#pricing">定价</a>
       <a href="#faq">常见问题</a>
-      <button class="nav-pwd" onclick="copyPwd()" title="点击复制解压密码">🔑 <span id="navPwdHint">COSV5.VIP</span></button>
+      <button class="nav-pwd" onclick="copyPwd()" title="复制解压密码">🔑<span class="pwd-label"> COSV5.VIP</span></button>
       <a href="#join" class="nav-cta">加入</a>
     </div>
   </div>
 </nav>
+
+<button class="floating-pwd" id="floatingPwd" onclick="copyPwd()" title="复制解压密码">🔑 复制密码</button>
 
 <!-- ══ HERO ══ -->
 <section class="hero">
@@ -377,19 +398,7 @@ footer .fl2 a:hover{color:var(--purple)}
   </div>
 </section>
 
-<!-- ══ GOSSIP (coming) ══ -->
-<section class="section">
-  <div class="sin sc">
-    <div class="badge r">规划</div>
-    <h2 class="st r">博主圈动态（开发中）</h2>
-    <p class="sd r">计划自动采集 Cosplay 博主动态，让社群更有活力。也期待有能力的成员一起参与。</p>
-    <div class="grid-3" style="max-width:700px;margin:0 auto">
-      <div class="card r"><span class="ic">📡</span><h3>自动采集博主动态</h3><p>计划自动抓取知名 Coser 的社交平台动态，汇总推送到社群频道。</p></div>
-      <div class="card r r1"><span class="ic">💬</span><h3>活跃社群氛围</h3><p>有了话题素材，成员间交流更自然。减少冷群，增加归属感。</p></div>
-      <div class="card r r2"><span class="ic">📈</span><h3>新增曝光渠道</h3><p>动态内容本身也是流量来源，吸引更多同好关注社群。</p></div>
-    </div>
-  </div>
-</section>
+<!-- ══ NEWSLETTER SECTION REMOVED ══ -->
 
 <!-- ══ PRICING ══ -->
 <section class="section" id="pricing">
@@ -571,8 +580,12 @@ function switchTab(btn,id){
 function copyPwd(){
   const pwd='COSV5.VIP';
   navigator.clipboard?.writeText(pwd);
-  const btn=document.querySelector('.nav-pwd'),hint=document.getElementById('navPwdHint');
-  if(btn){btn.classList.add('copied');hint.textContent='已复制 ✓';setTimeout(()=>{btn.classList.remove('copied');hint.textContent='COSV5.VIP'},2000)}
+  document.querySelectorAll('.nav-pwd').forEach(el=>{el.classList.add('copied')});
+  document.querySelectorAll('.floating-pwd').forEach(el=>{el.classList.add('copied');el.textContent='已复制 ✓'});
+  setTimeout(()=>{
+    document.querySelectorAll('.nav-pwd').forEach(el=>el.classList.remove('copied'));
+    document.querySelector('.floating-pwd').textContent='🔑 复制密码';
+  },2000);
 }
 </script>
 </body>
