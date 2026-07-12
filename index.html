@@ -381,8 +381,71 @@ footer .fl2 a:hover{color:var(--purple)}
   <div class="sin sc">
     <div class="sl r">FAQ</div>
     <h2 class="st r">常见问题</h2>
-    <div class="fl">
-      <div class="fi r"><div class="fq">初级和高级有什么区别？<span class="a">▼</span></div><div class="fa"><p>初级每天获取全网流出资源，高级资源延后约1周预览。高级含初级全部权益，额外有未流出资源包，且所有资源第一时间查看。</p></div></div>
+    <div class="faq-tabs r">
+      <button class="faq-tab active" onclick="switchFaqTab(this,'pre')">未进群</button>
+      <button class="faq-tab" onclick="switchFaqTab(this,'post')">已进群</button>
+      <button class="faq-tab" onclick="switchFaqTab(this,'other')">其它</button>
+    </div>
+
+    <div class="faq-panel active" id="faq-pre">
+      <div class="fl">
+        <div class="fi"><div class="fq">初级和高级有什么区别？一次付费还是每年？<span class="a">▼</span></div><div class="fa"><p>初级 ¥18/月、¥36/年、¥66/永久，每天更新全网流出资源，高级资源延后约1周预览。<br><br>高级 ¥198/年、¥288/永久，含初级全部权益，额外有未流出资源包（社群投稿+社群采购），且所有资源第一时间查看，无需等待下放。<br><br>高级永久 ¥288，初级永久 ¥66，都是买断制。</p></div></div>
+        <div class="fi"><div class="fq">付款后怎么加入？<span class="a">▼</span></div><div class="fa"><p>通过 @V5joinBot 完成支付，Bot 会自动引导你加入社群群组和频道。如果遇到问题，联系 @V5CSRbot 客服处理。</p></div></div>
+        <div class="fi"><div class="fq">和那些网站比有什么优势？<span class="a">▼</span></div><div class="fa"><p>传统 cosplay 资源站需要先付费买会员，下载网盘包才能看到内容。COSV5 在 TG 直接预览全部媒体，满意再下载。我们持有上百个站的付费会员，帮你筛选后再发布，省去你一个个站去蹲的时间。</p></div></div>
+        <div class="fi"><div class="fq">内容是哪里来的？<span class="a">▼</span></div><div class="fa"><p>我们持有 59+ 个 Cosplay 资源网站的付费会员账号，pabot 实时监控新作发布。收到通知后手动下载筛选，把优质内容发布到社群。高级社群的部分资源为成员投稿或社群出资采购。</p></div></div>
+        <div class="fi"><div class="fq">有打包下载吗？<span class="a">▼</span></div><div class="fa"><p>目前通过 TG 频道直接预览和下载单个文件，打包功能在开发中。核心体验是预览后再下，不比传统网站需要盲下网盘包。</p></div></div>
+      </div>
+    </div>
+
+    <div class="faq-panel" id="faq-post">
+      <div class="fl">
+        <div class="fi"><div class="fq">解压密码是什么？<span class="a">▼</span></div><div class="fa"><p>统一解压密码：<strong style="color:var(--gold-light);font-size:18px;letter-spacing:3px">COSV5.VIP</strong>，严格区分大小写。<br><br>推荐解压工具：Bandizip（Windows）· Files（iOS）· ZArchiver（Android）<br><br>确保所有分卷（.part1/.001）在同一文件夹，右键点击第一个分卷解压。</p></div></div>
+        <div class="fi"><div class="fq">如何绑定邮箱？有什么用？<span class="a">▼</span></div><div class="fa"><p>在 @GuiYaoBot 中使用邮箱功能绑定。绑定后如果 Telegram 账号出问题，可以通过验证邮箱恢复社群权益，不会因为换号丢失会员身份。</p></div></div>
+        <div class="fi"><div class="fq">积分怎么获取和兑换？<span class="a">▼</span></div><div class="fa"><p>在 @GuiYaoBot 每日签到获取积分。积分可以兑换许愿卡——许愿卡可以指定想要的作品，社群为你采购。也可以兑换其他社群权益。</p></div></div>
+        <div class="fi"><div class="fq">如何投稿？有奖励吗？<span class="a">▼</span></div><div class="fa"><p>社群接受成员投稿，投稿内容需要未在社群内发布过的高质量作品。投稿被采纳后会获得积分奖励，优质投稿会被推送至高级社群。</p></div></div>
+        <div class="fi"><div class="fq">如何邀请好友？<span class="a">▼</span></div><div class="fa"><p>在 @GuiYaoBot 中使用邀请功能获取邀请链接。邀请好友加入可获得积分奖励。</p></div></div>
+      </div>
+    </div>
+
+    <div class="faq-panel" id="faq-other">
+      <div class="fl">
+        <div class="fi"><div class="fq">遇到问题如何联系客服？<span class="a">▼</span></div><div class="fa"><p>直接联系 @V5CSRbot，客服 Bot 会引导你处理。包括支付问题、权益问题、账号问题等。</p></div></div>
+        <div class="fi"><div class="fq">社群有哪些频道？<span class="a">▼</span></div><div class="fa"><p>主频道 @COSV5_COM（全网流出）、高级频道 @COSV5_VIP（未流出）、中文日常 @COSV5CN，以及多个语言频道（ENG/JP/RU/KO/TH/FR/DE/HI）。全部列表可查看 @COSV5Nav。</p></div></div>
+        <div class="fi"><div class="fq">你们有哪些 Bot 可以用？<span class="a">▼</span></div><div class="fa"><p>@PaPulseBot — 以图搜图 / 资源搜索<br>@GuiYaoBot — 签到 / 积分 / 邮箱绑定 / 权益恢复<br>@V5joinBot — 会员购买<br>@V5CSRbot — 客服<br>@ChuYunbot — 作品预览</p></div></div>
+        <div class="fi"><div class="fq">社群是什么时候成立的？<span class="a">▼</span></div><div class="fa"><p>2024年5月1日成立。走过封禁与重建，目前运营 800+ 天，社群成员 5000+，频道 100+。</p></div></div>
+      </div>
+    </div>
+
+    <style>
+    .faq-tabs{display:flex;justify-content:center;gap:8px;margin-bottom:28px;flex-wrap:wrap}
+    .faq-tab{
+      padding:8px 22px;border-radius:50px;
+      background:rgba(255,255,255,0.02);
+      border:1px solid var(--border);
+      color:var(--text2);font-size:13px;font-weight:500;
+      cursor:pointer;transition:all .3s;
+      font-family:inherit;
+    }
+    .faq-tab:hover{border-color:var(--border2);color:var(--text)}
+    .faq-tab.active{
+      background:rgba(167,139,250,0.08);
+      border-color:rgba(167,139,250,0.2);
+      color:var(--purple);
+    }
+    .faq-panel{display:none;text-align:left}
+    .faq-panel.active{display:block}
+    </style>
+
+    <script>
+    function switchFaqTab(btn,panel){
+      document.querySelectorAll('.faq-tab').forEach(t=>t.classList.remove('active'));
+      document.querySelectorAll('.faq-panel').forEach(p=>p.classList.remove('active'));
+      btn.classList.add('active');
+      document.getElementById('faq-'+panel).classList.add('active');
+    }
+    </script>
+  </div>
+</section>
       <div class="fi r"><div class="fq">和资源网站比好在哪里？<span class="a">▼</span></div><div class="fa"><p>TG 直接预览全部媒体，不用盲下网盘包。我们持有上百个付费站会员，人工筛选后发布，无低质内容。</p></div></div>
       <div class="fi r"><div class="fq">高级的未流出资源哪来的？<span class="a">▼</span></div><div class="fa"><p>社群成员投稿、社群出资采购热门新作、积分许愿卡兑换。资源被流出公开后下放至初级。</p></div></div>
       <div class="fi r"><div class="fq">有打包下载吗？<span class="a">▼</span></div><div class="fa"><p>目前通过 TG 频道直接预览和下载。打包功能在开发中。核心体验：先看再下。</p></div></div>
