@@ -63,6 +63,18 @@ nav.scrolled{background:rgba(6,3,8,0.93);border-color:var(--b)}
   box-shadow:0 0 18px var(--p-glow);
 }
 .nav-cta:hover{transform:translateY(-1px);box-shadow:0 0 28px rgba(167,139,250,0.2)}
+.nav-pwd{
+  padding:6px 14px;border-radius:50px;
+  background:rgba(245,158,11,0.06);
+  border:1px solid rgba(245,158,11,0.12);
+  color:var(--gold);font-size:12px;font-weight:600;
+  cursor:pointer;transition:all .3s;
+  font-family:inherit;letter-spacing:1px;
+  display:inline-flex;align-items:center;gap:5px;
+  white-space:nowrap;
+}
+.nav-pwd:hover{background:rgba(245,158,11,0.1);border-color:var(--gold);transform:translateY(-1px)}
+.nav-pwd.copied{background:rgba(34,197,94,0.1);border-color:rgba(34,197,94,0.2);color:#22c55e}
 
 /* ── Sections ── */
 .section{position:relative;z-index:1;padding:100px 24px 80px;min-height:100vh;display:flex;align-items:center}
@@ -268,10 +280,11 @@ footer .fl2 a:hover{color:var(--purple)}
   <div class="nav-inner">
     <div class="nav-logo">COSV5</div>
     <div class="nav-links" id="navLinks">
-      <a href="#about" class="active">关于</a>
+      <a href="#about">关于</a>
       <a href="#精选">精选</a>
       <a href="#pricing">定价</a>
       <a href="#faq">常见问题</a>
+      <button class="nav-pwd" onclick="copyPwd()" title="点击复制解压密码">🔑 <span id="navPwdHint">COSV5.VIP</span></button>
       <a href="#join" class="nav-cta">加入</a>
     </div>
   </div>
@@ -462,7 +475,20 @@ footer .fl2 a:hover{color:var(--purple)}
     </div>
 
     <div class="faq-panel" id="post">
-      <div class="fi"><div class="fq">🔑 解压密码是什么？<span class="a">▼</span></div><div class="fa"><p style="font-size:20px;font-weight:700;letter-spacing:4px;color:var(--g-light);text-align:center;padding:12px;background:rgba(245,158,11,0.04);border-radius:8px;border:1px solid rgba(245,158,11,0.1)">COSV5.VIP</p><p style="margin-top:10px">统一解压密码，严格区分大小写。<br>确保所有分卷(.part1/.001)在同一文件夹，右键第一个分卷解压。<br>推荐工具：Bandizip(Win) · Files(iOS) · ZArchiver(Android)</p></div></div>
+      <div class="fi"><div class="fq">🔑 解压密码是什么？<span class="a">▼</span></div><div class="fa">
+        <div style="text-align:center;padding:16px;background:rgba(245,158,11,0.04);border-radius:8px;border:1px solid rgba(245,158,11,0.1);margin-bottom:12px">
+          <p style="font-size:11px;color:var(--t3);margin-bottom:6px">📋 当前统一密码（点击复制）</p>
+          <p style="font-size:22px;font-weight:700;letter-spacing:5px;color:var(--g-light);cursor:pointer" onclick="copyPwd()" title="点击复制">COSV5.VIP</p>
+        </div>
+        <p style="font-size:12px;color:var(--t3);margin-bottom:8px">📚 历史密码参考：<span style="color:var(--t2)">@coserdh · @CosYiMi · 123321 · CoserBay</span></p>
+        <p style="font-size:12px;color:var(--gold);margin-bottom:10px">⚠️ 严格区分大小写，符号（如@）必须准确输入，避免多余空格</p>
+        <p style="font-size:12px;color:var(--t2);margin-bottom:4px">📦 分卷解压步骤：</p>
+        <p style="font-size:12px;color:var(--t3);margin-bottom:10px;line-height:1.8">① 确保所有分卷文件在同一文件夹<br>② 选择第一个分卷（.part1/.001）解压<br>③ 系统自动拼接完成</p>
+        <p style="font-size:12px;color:var(--t2);margin-bottom:4px">🛠️ 推荐解压工具：</p>
+        <p style="font-size:12px;color:var(--t3);margin-bottom:10px">Windows：Bandizip · iOS：Documents / iZip · Android：ZArchiver</p>
+        <p style="font-size:12px;color:var(--t2);margin-bottom:4px">📱 iOS 用户特别注意：</p>
+        <p style="font-size:12px;color:var(--t3);line-height:1.7">系统自带的「文件」App 对含特殊字符的压缩包可能有密码误报，这是 iOS bug。<br>请使用 Documents by Readdle 或 iZip（App Store 免费下载），在 App 内打开文件解压即可。</p>
+      </div></div>
       <div class="fi"><div class="fq">如何绑定邮箱？有什么用？<span class="a">▼</span></div><div class="fa"><p>在 @GuiYaoBot 绑定邮箱。TG 账号出问题时可验证恢复社群权益，不会因换号丢失会员身份。</p></div></div>
       <div class="fi"><div class="fq">积分怎么获取和兑换？<span class="a">▼</span></div><div class="fa"><p>在 @GuiYaoBot 每日签到获取积分。可兑换许愿卡（指定作品，社群采购）或其他权益。</p></div></div>
       <div class="fi"><div class="fq">如何投稿？有奖励吗？<span class="a">▼</span></div><div class="fa"><p>社群接受未发布过的高质量作品投稿。被采纳后获积分奖励，优质投稿推送至高级社群。</p></div></div>
@@ -540,6 +566,13 @@ function switchTab(btn,id){
   document.querySelectorAll('.faq-panel').forEach(p=>p.classList.remove('active'));
   btn.classList.add('active');
   document.getElementById(id).classList.add('active');
+}
+// Copy password
+function copyPwd(){
+  const pwd='COSV5.VIP';
+  navigator.clipboard?.writeText(pwd);
+  const btn=document.querySelector('.nav-pwd'),hint=document.getElementById('navPwdHint');
+  if(btn){btn.classList.add('copied');hint.textContent='已复制 ✓';setTimeout(()=>{btn.classList.remove('copied');hint.textContent='COSV5.VIP'},2000)}
 }
 </script>
 </body>
