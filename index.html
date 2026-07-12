@@ -165,31 +165,39 @@ nav.scrolled{background:rgba(6,3,8,0.93);border-color:var(--b)}
 /* ── Pricing ── */
 .pg{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px;max-width:680px;margin:0 auto}
 .pc{
-  padding:36px 28px;border-radius:var(--rl);
+  border-radius:var(--rl);
   background:var(--card);border:1px solid var(--b);
-  backdrop-filter:blur(10px);position:relative;transition:transform .4s;
+  backdrop-filter:blur(10px);position:relative;
+  transition:all .4s;cursor:pointer;overflow:hidden;
 }
 .pc:hover{transform:translateY(-3px)}
 .pc.ft{
-  border-color:rgba(167,139,250,0.12);
-  background:rgba(22,10,40,0.6);
-  box-shadow:0 0 30px rgba(167,139,250,0.03),inset 0 1px 0 rgba(167,139,250,0.06);
+  border-color:rgba(167,139,250,0.14);
+  background:rgba(22,10,40,0.65);
+  box-shadow:0 0 30px rgba(167,139,250,0.04),inset 0 1px 0 rgba(167,139,250,0.08);
 }
+.pc-inner{padding:36px 28px 28px;transition:padding .4s}
+.pc.open .pc-inner{padding-bottom:20px}
 .pb{
   position:absolute;top:-11px;left:50%;transform:translateX(-50%);
   padding:3px 16px;border-radius:50px;
-  font-size:10px;font-weight:700;letter-spacing:1px;white-space:nowrap;
+  font-size:10px;font-weight:700;letter-spacing:1px;white-space:nowrap;z-index:2;
 }
 .pb.gold{background:var(--gg);color:#0a0a0a}
 .pb.purple{background:var(--g);color:#fff}
-.pn{font-size:16px;font-weight:600;margin-bottom:3px}
+.pn{font-size:17px;font-weight:600;margin-bottom:2px}
 .psub{font-size:12px;color:var(--t3);margin-bottom:16px}
-.pp{margin-bottom:12px}
-.pp .a{font-size:34px;font-weight:700;background:var(--g);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.pp{margin-bottom:4px}
+.pp .a{font-size:36px;font-weight:700;background:var(--g);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
 .pp .e{font-size:13px;color:var(--t2);margin-left:2px}
-.pt{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
+.pt{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:6px}
 .pt span{padding:4px 10px;border-radius:50px;background:rgba(255,255,255,0.02);border:1px solid var(--b);font-size:11px;color:var(--t2)}
-.pf{list-style:none;margin-bottom:20px}
+.pc-expand{text-align:center;font-size:11px;color:var(--t3);padding:4px 0 0;transition:all .3s}
+.pc-expand .arr{display:inline-block;transition:transform .4s;margin-left:4px}
+.pc.open .pc-expand .arr{transform:rotate(180deg)}
+.pc-details{max-height:0;overflow:hidden;transition:max-height .5s ease,padding .5s ease;padding:0 28px}
+.pc.open .pc-details{max-height:400px;padding:0 28px 28px}
+.pf{list-style:none;margin:0 0 18px}
 .pf li{padding:5px 0;font-size:13px;color:var(--t2);display:flex;align-items:center;gap:8px}
 .pf li::before{content:'\2726';color:var(--purple);font-size:10px}
 .pc .btn-p,.pc .btn-s{display:flex;justify-content:center;font-size:13px;padding:12px 26px}
@@ -463,35 +471,45 @@ footer .fl2 a:hover{color:var(--purple)}
     <div class="badge r">定价</div>
     <h2 class="st r">选择方案</h2>
     <div class="pg">
-      <div class="pc r">
+      <div class="pc r" onclick="togglePricing(this)">
         <div class="pb gold">🔥 热销</div>
-        <div class="pn">🌱 初级</div>
-        <div class="psub">每日全网流出资源</div>
-        <div class="pp"><span class="a">¥18</span><span class="e">/月</span></div>
-        <div class="pt"><span>¥36/年</span><span>¥66/永久</span></div>
-        <ul class="pf">
-          <li>全网流出资源每日更新</li>
-          <li>TG 直接预览全部媒体</li>
-          <li>高级资源延后约1周预览</li>
-          <li>以图搜图 + 频道搜索</li>
-          <li>签到积分系统</li>
-        </ul>
-        <a href="https://t.me/V5joinBot" target="_blank" class="btn-s">选择初级</a>
+        <div class="pc-inner">
+          <div class="pn">🌱 初级</div>
+          <div class="psub">每日全网流出资源</div>
+          <div class="pp"><span class="a">¥18</span><span class="e">/月</span></div>
+          <div class="pt"><span>¥36/年</span><span>¥66/永久</span></div>
+          <div class="pc-expand">点击查看详情 <span class="arr">▾</span></div>
+        </div>
+        <div class="pc-details">
+          <ul class="pf">
+            <li>全网流出资源每日更新</li>
+            <li>TG 直接预览全部媒体</li>
+            <li>高级资源延后约1周预览</li>
+            <li>以图搜图 + 频道搜索</li>
+            <li>签到积分系统</li>
+          </ul>
+          <a href="https://t.me/V5joinBot" target="_blank" class="btn-s">选择初级</a>
+        </div>
       </div>
-      <div class="pc ft r r2">
+      <div class="pc ft r r2" onclick="togglePricing(this)">
         <div class="pb purple">⭐ 推荐</div>
-        <div class="pn">🎄 高级</div>
-        <div class="psub">含初级全部权益 + 未流出资源</div>
-        <div class="pp"><span class="a">¥198</span><span class="e">/年</span></div>
-        <div class="pt"><span>¥288/永久</span></div>
-        <ul class="pf">
-          <li>含初级全部权益</li>
-          <li>未流出资源包（投稿/采购）</li>
-          <li>高级资源第一时间查看</li>
-          <li>网站内容搜索权限</li>
-          <li>许愿卡 · 积分特权</li>
-        </ul>
-        <a href="https://t.me/V5joinBot" target="_blank" class="btn-p">选择高级 🚀</a>
+        <div class="pc-inner">
+          <div class="pn">🎄 高级</div>
+          <div class="psub">含初级全部权益 + 未流出资源</div>
+          <div class="pp"><span class="a">¥198</span><span class="e">/年</span></div>
+          <div class="pt"><span>¥288/永久</span></div>
+          <div class="pc-expand">点击查看详情 <span class="arr">▾</span></div>
+        </div>
+        <div class="pc-details">
+          <ul class="pf">
+            <li>含初级全部权益</li>
+            <li>未流出资源包（投稿/采购）</li>
+            <li>高级资源第一时间查看</li>
+            <li>网站内容搜索权限</li>
+            <li>许愿卡 · 积分特权</li>
+          </ul>
+          <a href="https://t.me/V5joinBot" target="_blank" class="btn-p">选择高级 🚀</a>
+        </div>
       </div>
     </div>
   </div>
@@ -620,6 +638,11 @@ function switchTab(btn,id){
   document.querySelectorAll('.faq-tab').forEach(t=>t.classList.remove('active'));
   document.querySelectorAll('.faq-panel').forEach(p=>p.classList.remove('active'));
   btn.classList.add('active');document.getElementById(id).classList.add('active');
+}
+function togglePricing(el){
+  const o=el.classList.contains('open');
+  document.querySelectorAll('.pc.open').forEach(c=>c.classList.remove('open'));
+  if(!o)el.classList.add('open');
 }
 </script>
 </body>
